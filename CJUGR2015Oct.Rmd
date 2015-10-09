@@ -1,0 +1,120 @@
+---
+title: "CJUG SDTM Rチーム 2015年10月会合資料"
+author: Masafumi Okada
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: html_document
+---
+
+# CJUG SDTM Rチーム 2015年10月会合資料
+
+今月は私は会合に出席できないので、資料を作りました。
+
+[Wiki](http://github.com/mokjpn/cjugr/wiki)に書いておいた予定にしたがって、コマンドを書いていきます。
+
+## 本日のサンプルデータ
+
+SDTMチーム HCT-1337模擬試験のデータを使ってみましょう。30_Summaryフォルダの下にあるXPTを使ってみます。Working DirectoryをDropboxの"23_HCT-1337"フォルダに指定して実行します。
+
+```{r, echo=FALSE,warning=FALSE}
+library(knitr)
+# knitでこのファイルからレポートを作るには、ここでWorking Directoryの指定をします。通常はsetwd()ですが、knitrパッケージを使ったレポートを作成するときはこのように指定します。
+opts_knit$set(root.dir="~/Dropbox/CDISC/CJUG SDTM/20_Work_in_progress/23_HCT-1337")
+```
+
+```{r}
+# データセットはSAS XPT形式で作成されているので、foreignパッケージの read.xport()関数で読み込みます
+library(foreign)
+# read.xportでxptファイルを変数QSに、データフレームとして読み込み
+QS <- read.xport("30_Summary/dataset/QS.xpt")
+# str でデータフレームの概要を表示し、正しく読み込まれていることを確認
+str(QS)
+# read.xportでxptファイルを変数DAに、データフレームとして読み込み
+DA <- read.xport("30_Summary/dataset/DA.xpt")
+# str でデータフレームの概要を表示し、正しく読み込まれていることを確認
+str(DA)
+```
+
+## boxplotによる箱ヒゲ図 / Draw boxplots by boxplot() or plot()
+
+では、計算スコア(QSSTRESC)の値について、箱ひげ図で全体の分布を、Pre-doseかPost-doseかによって(QSTESTCDによって)層別化して見てみましょう。
+
+```{r}
+# オリジナルのQSデータセットを壊さないようにコピーを作ります。
+qsbox <- QS
+# コピー(qsbox)内で、QSSTRESCを数値に変換し、qsstrescn 列に格納します。
+## この時に注意! Rのデフォルトだと、文字列を外部ファイルから読み込んだ時、自動的に「カテゴリー化」してしまいます。
+## カテゴリー化された変数は、as.numeric()だけだと、「カテゴリーの通し番号」に変化してしまうので、一度「カテゴリー値(factorと呼びます)」から「文字列」に、
+## as.character() を使って変換してあげる必要があります。
+qsbox$qsstrescn <- as.numeric(as.character(qsbox$QSSTRESC))
+# 箱ひげ図を書きましょう。
+plot(qsstrescn ~ QSTESTCD, data=qsbox)
+```
+
+
+## dplyrによるかっこいいパイプ処理 / Pipeline operation by dplyr package
+
+では次に、Pre-doseとPost-doseの間の変化量で見てみましょう。１変数だけの箱ひげ図のときはboxplot()を使います。
+２行に分かれている、Pre-doseとPost-doseの値を１つの「差」にまとめるため、いろいろな方法がありますが、ここではdplyrパッケージを使ってやってみます。
+
+```{r}
+# dplyrパッケージの読み込み。最初に使う時には、あらかじめdplyrパッケージをインストールしておいてください。
+library(dplyr)
+# あるデータフレームを与えると、POSTQとPREQSの間で、qsstrescn の差をとって、その結果をdiffという列に追加する、という機能を持つ関数を定義します。
+qdiff <- function(x) { data.frame(diff=x[x$QSTESTCD == "POSTQ",]$qsstrescn - x[x$QSTESTCD == "PREQS",]$qsstrescn )}
+# 全体のデータをUSUBJIDごとにグループ化して、それをqdiff関数に与えます。
+qsbox %>% group_by(USUBJID) %>% do(qdiff(.))
+# この結果のdiff列が差の値なので、これの箱ヒゲ図を書きます。変数が１つの時の箱ひげ図はboxplot関数を使います。普通はboxplot(df$diff)などとするところですが、dplyrパッケージを使った時に可能になる"%>%"を使った書き方だと、こんな風になります。
+qsbox %>% group_by(USUBJID) %>% do(qdiff(.)) %>% .$diff %>% boxplot
+```
+
+ではさらに、群によって差の値が異なるかを見てみましょう。
+
+```{r}
+# inner_join()で、DAテーブルとQSテーブル（diff列付き) をUSUBJIDをキーとして結合します。selectでDASCAT列とdiff列だけを取り出した上で、plotで箱ひげ図を書きます。%>% の後では、処理中の表は"."という特別な名前でアクセスされます。
+qsbox %>% group_by(USUBJID) %>% do(qdiff(.)) %>% inner_join(DA,by="USUBJID") %>% select(DASCAT, diff) %>% plot(diff ~ DASCAT,data=.)
+# 同様に、t検定もできますね
+qsbox %>% group_by(USUBJID) %>% do(qdiff(.)) %>% inner_join(DA,by="USUBJID") %>% select(DASCAT, diff) %>% t.test(diff ~ DASCAT, data=.)
+```
+
+ついでに、DMドメインを読み込んで、性別と年齢で調整もしちゃいましょう
+
+```{r}
+DM <- read.xport("30_Summary/dataset/DM.xpt")
+qsbox %>% group_by(USUBJID) %>% do(qdiff(.)) %>% inner_join(DA,by="USUBJID") %>% inner_join(DM, by="USUBJID") %>% select(DASCAT, diff, SEX, AGE) %>% lm(diff ~ DASCAT+SEX+AGE, data=.) %>% summary
+```
+
+
+## tidyRパッケージによる、normalized datasetのde-normalized formatへの変更 / Convert normalized dataset into de-normalized form by tidyR package
+
+さて、ここまでで、SDTMデータセットから簡単に解析をすることができるようになりましたが、qdiff関数を定義するところが若干面倒だったかなと思います。
+これは、SDTMのデータセットが、Normalized format、つまり、１症例のデータを複数行で表現するようになっているためです。今回はPreの測定とPostの測定の値から差を出す関数を定義しましたが、実はもっと簡単な方法があります。
+
+```{r}
+# tidyr パッケージを読み込みます。最初に使う時は、パッケージのインストールも必要です。
+library(tidyr)
+# オリジナルのQSデータセットから...
+QS %>%  
+  # mutate()は列を加工して新たな列を追加します。QSSTRESCの数値への変換。
+  mutate(qsstrescn = as.numeric(as.character(QSSTRESC))) %>% 
+  # select()は特定の列だけを取り出します。USUBJIDとQSTESTCDとqsstrescn だけにします。
+  select(USUBJID, QSTESTCD, qsstrescn) %>% 
+  # USUBJID でグループ化
+  group_by(USUBJID) %>% 
+  # spread() はNormalized formatを、１行１症例のフォーマットに変換します。QSTESTCDの値をそれぞれ列にして、qsstrescnを値にします。
+  spread(QSTESTCD,qsstrescn) %>% 
+  # POSTQとPRESQの差をとって、diffという列に追加します。
+  mutate(diff = POSTQ - PREQS) %>% 
+  # DAドメインの表を結合
+  inner_join(DA,by="USUBJID") %>%
+  # DASCATごとにdiffの値を箱ひげ図にします
+  plot(diff ~ DASCAT, data=.) 
+```
+
+いかがでしたか。
+本日はSDTMを作るというより、データがSDTMになっていると解析がいかに簡単か、ということが中心になりました。
+次は、SDTMを作るほうにフォーカスを当てていきたいと思います。
+
+
+
+
+
