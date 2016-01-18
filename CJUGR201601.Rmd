@@ -1,0 +1,39 @@
+---
+title: "CJUGR201601"
+author: "岡田 昌史"
+date: "2016年1月15日"
+output: ioslides_presentation
+---
+
+# CJUG SDTM Rチーム 2016年前半のトピック
+
+**RでSDTMを作ってみよう**
+
+## Activity summary in English (Jan 2016)
+
+We have tried to import SDTM dataset into R and process that in R language. This trial was successfully finished. Now we will start a new challange to make SDTM dataset from raw data generated from EDC. At the first step of this challenge, we selected a tool to make R programming easier. "R AnalyticFlow" from ef-prime inc. was selected as a tool to make the R programming easier. We will begin reading an example raw data in the next meeting.
+
+## 概要
+
+今までのチーム活動では、すでにSDTMになっているデータをRで読み込み、データマネジメントに生かすための方法を研究しました。次の段階として、EDCの生データからSDTMを作成する手順を研究していきたいと思います。
+
+## ツールのご紹介 - DSL
+
+SDTMを作成する過程は、EDCの出力するデータにより様々であり、定式化することが難しい領域ですが、一度パターンがつかめてしまえば同じ方法をずっと使い続けることができます。すなわち、SDTMを作成する過程は本質的にはプログラミングそのものであるといえますが、入力されるパターンもある程度決まったものがあり、出力は一定ですから、汎用のプログラミング言語を使って記述するのは少し冗長です。そういう時は、[Domain Specific Language](https://ja.wikipedia.org/wiki/ドメイン固有言語) (DSL) の出番ですよね。
+
+CDISC領域のDSLとしては、[MatchaScript](https://github.com/i-akiya/MatchaScript)に大変期待が持てるのですが、まだ実用段階に達してはいないので、今回はRを使います。Rも統計解析領域のDSLとも言えますが、どんな処理でも汎用的に書ける言語としての機能を十分持っているので、学習のハードルはそれなりにあります。
+
+## ツールのご紹介 - R AnalyticFlow
+
+そこで、Rでのプログラミングを簡単に行うためのツールとして、
+[R AnalyticFlow](http://www.ef-prime.com/products/ranalyticflow/)を使用してみます。このツールは、R言語の小さなプログラムをブロックとして記述して、例えばデータ入力のブロック、抽出のブロック、集計のブロック、変換のブロック、というようにつなげていき、最終的に求める出力を得るためのプログラムをブロックの組み合わせで記述することができる、というツールです。Rをそのまま使う場合、このようなブロック処理は関数を使って記述しますが、関数を作成し、そのソースコードを管理するには一定のテクニックの習得が必要です。R AnalyticFlowを使って関数の機能をブロックにまとめると、関数の引数をGUIで指定できるようになりますし、ブロックを並べ替えてデータ処理のフローを変更すると、そのフローに応じてRでバッチ処理できるコードを出力してくれる機能もあるので、対話的処理からバッチ処理への移行もスムーズになるというメリットがあります。
+
+なお、R AnalyticFlow自体のプログラム部分は[LGPL](https://ja.wikipedia.org/wiki/GNU_Lesser_General_Public_License)ライセンスで配布されています。
+
+今回はこのツールを使い、まずは模擬試験の生データを題材にして、SDTMのデータセットを作るためのフローを作成していきましょう。
+
+## 来月までの宿題(2016年度2月会合まで)
+
+- R AnalyticFlowを用いて、Dropboxの `HCT-1337/14_Program/04_FinalData/HCT-1337_visit2_140418_1643.csv` の、ANSWER2列の値を読み込み、ヒストグラムを表示する、というフローを作ってみましょう。
+
+
