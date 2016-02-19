@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rflow [
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
+<rflow>
+	<graph version="0.7" width="637" height="259" locationtype="a" offsetx="0" offsety="0">
+		<setting>
+			<entry key="OUTPUT_DIRECTORY"></entry>
+			<entry key="SAVE_CACHE">false</entry>
+			<entry key="FONT_SCREEN">monospace</entry>
+			<entry key="TEXT_ENCODING">UTF-8</entry>
+			<entry key="LOAD_CACHE">false</entry>
+			<entry key="IGNORE_ERROR">false</entry>
+			<entry key="SAVE_WORKSPACE"></entry>
+			<entry key="OUTPUT_REPORT">true</entry>
+			<entry key="OUTPUT_ITEMS">script</entry>
+			<entry key="RUN_TYPE">2</entry>
+			<entry key="USE_GRID">true</entry>
+			<entry key="REPORT_TYPES">pdf,html</entry>
+			<entry key="FOLDER">Example1</entry>
+			<entry key="GRID_DISTANCE2">10</entry>
+			<entry key="IMAGE_SIZE">480,480</entry>
+			<entry key="FONT_OTHER">sans-serif</entry>
+		</setting>
+<properties>
+<v key="packages"/>
+</properties>
+		<node id="0" date="1455859090681" uid="237006fa3e665e9" x="400" y="70">
+			<command>print(lattice::histogram(x = ~ ANSWER2, data = merged, type = &quot;percent&quot;))
+</command>
+			<property title="全体のヒストグラムを作成"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RLatticeHistogram">
+<v key="data">merged</v>
+<v key="variable">ANSWER2</v>
+<v key="conditioning"/>
+<v key="nint"/>
+<v key="type">"percent"</v>
+<v key="main"/>
+<v key="sub"/>
+<v key="xlab"/>
+<v key="xmin"/>
+<v key="xmax"/>
+<v key="ylab"/>
+<v key="ymin"/>
+<v key="ymax"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="1" date="1455859605002" uid="a4ae0f44aa2bdd5" x="400" y="150">
+			<command>print(lattice::histogram(x = ~ ANSWER2 | DMRAND, data = merged, type = &quot;percent&quot;))
+</command>
+			<property title="DMRANDで群別のヒストグラムを作成"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RLatticeHistogram">
+<v key="data">merged</v>
+<v key="variable">ANSWER2</v>
+<v key="conditioning">DMRAND</v>
+<v key="nint"/>
+<v key="type">"percent"</v>
+<v key="main"/>
+<v key="sub"/>
+<v key="xlab"/>
+<v key="xmin"/>
+<v key="xmax"/>
+<v key="ylab"/>
+<v key="ymin"/>
+<v key="ymax"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="2" date="1455860156339" uid="986a7921675b18be" x="500" y="160">
+			<command>result &lt;- t.test(data = merged, ANSWER2 ~ DMRAND)
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+				<uidef>type: r-default
+value:
+  type: default
+  title: &apos;&apos;
+  function: t.test
+  package: &apos;&apos;
+  output: true
+  args:
+  - - argument: data
+      key_model:
+        type: rstring
+        value: {id: data, title: &apos;&apos;, default: &apos;&apos;, required: false}
+  - - argument: &apos;&apos;
+      key_model:
+        type: rstring
+        value: {id: &apos;&apos;, title: formula, default: &apos;&apos;, required: false}
+</uidef>
+<ui cls="t.test.yaml">
+<v key="_output">result</v>
+<v key="data">merged</v>
+<v key="_empty00">ANSWER2 ~ DMRAND</v>
+</ui>
+			</option>
+		</node>
+		<node id="3" date="1455859472297" uid="ac59704f87da729e" x="200" y="70">
+			<command>registration &lt;- read.table(file = file.choose(), header = TRUE, sep = &quot;,&quot;, fileEncoding = &quot;CP932&quot;, quote = &quot;\&quot;&quot;, stringsAsFactors = FALSE, comment.char = &quot;&quot;, na.strings = &quot;&quot;)
+</command>
+			<property title="registrationデータの読み込み"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReadTable" version="0.1">
+<v key="file">file.choose()</v>
+<v key="_output">registration</v>
+<v key="_output@auto">false</v>
+<v key="autodetect">false</v>
+<v key="sep">","</v>
+<v key="header">TRUE</v>
+<v key="fileEncoding">"CP932"</v>
+<v key="nrows"/>
+<v key="na.strings">""</v>
+<v key="quote">"\""</v>
+<v key="stringsAsFactors">FALSE</v>
+<v key="comment.char">""</v>
+<v key="check.names"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="4" date="1455858675954" uid="68e24c69e9dbe9f8" x="70" y="70">
+			<command>visit2 &lt;- read.table(file = file.choose(), header = TRUE, sep = &quot;,&quot;, fileEncoding = &quot;CP932&quot;, quote = &quot;\&quot;&quot;, stringsAsFactors = FALSE, comment.char = &quot;&quot;, na.strings = &quot;&quot;)
+</command>
+			<property title="visit2データの読み込み"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReadTable" version="0.1">
+<v key="file">file.choose()</v>
+<v key="_output">visit2</v>
+<v key="_output@auto">false</v>
+<v key="autodetect">false</v>
+<v key="sep">","</v>
+<v key="header">TRUE</v>
+<v key="fileEncoding">"CP932"</v>
+<v key="nrows"/>
+<v key="na.strings">""</v>
+<v key="quote">"\""</v>
+<v key="stringsAsFactors">FALSE</v>
+<v key="comment.char">""</v>
+<v key="check.names"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="5" date="1455859679687" uid="a887cd99063f856f" x="290" y="80">
+			<command>merged &lt;- merge(x = visit2, y = registration, all = FALSE, by = c(&quot;症例登録番号&quot;))
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RMerge2">
+<v key="x">visit2</v>
+<v key="y">registration</v>
+<v key="_output">merged</v>
+<v key="type">inner</v>
+<v key="match_columns">
+<row>
+<v>症例登録番号</v>
+<v/>
+</row>
+</v>
+<v key="suffixes_x"/>
+<v key="suffixes_y"/>
+<v key="args_switch">merge</v>
+<v key="args_switch@auto">true</v>
+<v key="args_merge"/>
+</ui>
+			</option>
+		</node>
+		<edge from="3" to="5"/>
+		<edge from="5" to="1"/>
+		<edge from="1" to="2"/>
+		<edge from="4" to="3"/>
+		<edge from="5" to="0"/>
+	</graph>
+	<task>
+		<taskgroup>
+			<taskproperty>
+				<entry key="title">リンク</entry>
+			</taskproperty>
+		</taskgroup>
+	</task>
+</rflow>
