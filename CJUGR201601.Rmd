@@ -9,6 +9,10 @@ output: ioslides_presentation
 
 **RでSDTMを作ってみよう**
 
+## Activity summary in English (Feb 2016)
+
+We tried to import two comma-separated text files into "R AnalyticFlow" software. Then we merged two datasets into one, and made a stratified histgram from the merged data.
+
 ## Activity summary in English (Jan 2016)
 
 We have tried to import SDTM dataset into R and process that in R language. This trial was successfully finished. Now we will start a new challange to make SDTM dataset from raw data generated from EDC. At the first step of this challenge, we selected a tool to make R programming easier. "R AnalyticFlow" from ef-prime inc. was selected as a tool to make the R programming easier. We will begin reading an example raw data in the next meeting.
