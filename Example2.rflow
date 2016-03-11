@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rflow [
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
+<rflow>
+	<graph version="0.7" width="709" height="279" locationtype="a" offsetx="10" offsety="0">
+		<setting>
+			<entry key="OUTPUT_DIRECTORY"></entry>
+			<entry key="SAVE_CACHE">false</entry>
+			<entry key="FONT_SCREEN">monospace</entry>
+			<entry key="TEXT_ENCODING">UTF-8</entry>
+			<entry key="LOAD_CACHE">false</entry>
+			<entry key="IGNORE_ERROR">false</entry>
+			<entry key="SAVE_WORKSPACE"></entry>
+			<entry key="OUTPUT_REPORT">true</entry>
+			<entry key="OUTPUT_ITEMS">script</entry>
+			<entry key="RUN_TYPE">2</entry>
+			<entry key="USE_GRID">true</entry>
+			<entry key="REPORT_TYPES">pdf,html</entry>
+			<entry key="FOLDER">Example2</entry>
+			<entry key="GRID_DISTANCE2">10</entry>
+			<entry key="IMAGE_SIZE">480,480</entry>
+			<entry key="FONT_OTHER">sans-serif</entry>
+		</setting>
+<properties>
+<v key="packages"/>
+</properties>
+		<node id="0" date="1457678998439" uid="c580422deb2437cb" x="110" y="70">
+			<command>visit2 &lt;- read.table(file = &quot;HCT-1337_visit2_140418_1643.csv&quot;, header = TRUE, sep = &quot;,&quot;, fileEncoding = &quot;CP932&quot;, quote = &quot;\&quot;&quot;, stringsAsFactors = FALSE, comment.char = &quot;&quot;, na.strings = &quot;&quot;)
+</command>
+			<property title="visit2データの読み込み"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReadTable" version="0.1">
+<v key="file">"HCT-1337_visit2_140418_1643.csv"</v>
+<v key="_output">visit2</v>
+<v key="_output@auto">false</v>
+<v key="autodetect">false</v>
+<v key="sep">","</v>
+<v key="header">TRUE</v>
+<v key="fileEncoding">"CP932"</v>
+<v key="nrows"/>
+<v key="na.strings">""</v>
+<v key="quote">"\""</v>
+<v key="stringsAsFactors">FALSE</v>
+<v key="comment.char">""</v>
+<v key="check.names"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="1" date="1457678998439" uid="aeec9bde8c647463" x="30" y="70">
+			<command>setwd(dir = dirname(file.choose()))
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+				<uidef>type: r-default
+value:
+  type: default
+  title: &apos;&apos;
+  function: setwd
+  package: &apos;&apos;
+  output: true
+  args:
+  - - argument: dir
+      key_model:
+        type: rstring
+        value: {id: dir, title: &apos;&apos;, default: file.choose(), required: false}
+</uidef>
+<ui cls="setwd.yaml">
+<v key="_output"/>
+<v key="dir">dirname(file.choose())</v>
+</ui>
+			</option>
+		</node>
+		<node id="2" date="1457678998439" uid="3cb8c4c8f8bd2fe7" x="300" y="60">
+			<command>registration &lt;- registration[, names(registration) %in% c(&quot;症例登録番号&quot;, &quot;試験名&quot;, &quot;現施設名&quot;, &quot;生年月日&quot;, &quot;性別&quot;), drop = FALSE]
+</command>
+			<property title="列の選択(registration)"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RSelectColumns" version="0.1">
+<v key="data">registration</v>
+<v key="_output">registration</v>
+<v key="_output@auto">true</v>
+<v key="type">Include</v>
+<v key="columns">
+<row>
+<v>症例登録番号</v>
+</row>
+<row>
+<v>試験名</v>
+</row>
+<row>
+<v>現施設名</v>
+</row>
+<row>
+<v>生年月日</v>
+</row>
+<row>
+<v>性別</v>
+</row>
+<row>
+<v/>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="3" date="1457678998439" uid="fa0af492c61de597" x="90" y="200">
+			<command>QS &lt;- merge(x = visit2, y = registration, all = FALSE, by = c(&quot;USUBJID&quot;))
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RMerge2">
+<v key="x">visit2</v>
+<v key="y">registration</v>
+<v key="_output">QS</v>
+<v key="type">inner</v>
+<v key="match_columns">
+<row>
+<v>USUBJID</v>
+<v/>
+</row>
+</v>
+<v key="suffixes_x"/>
+<v key="suffixes_y"/>
+<v key="args_switch">merge</v>
+<v key="args_switch@auto">true</v>
+<v key="args_merge"/>
+</ui>
+			</option>
+		</node>
+		<node id="4" date="1457678998438" uid="3c9661c3583eb5bb" x="380" y="50">
+			<command>visit2 &lt;- visit2[, names(visit2) %in% c(&quot;症例登録番号&quot;, &quot;試験名&quot;, &quot;現施設名&quot;, &quot;QSDT1&quot;, &quot;ANSWER1&quot;, 
+&quot;QSTD2&quot;, &quot;ANSWER2&quot;), drop = FALSE]
+</command>
+			<property title="列の選択(visit2)"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RSelectColumns" version="0.1">
+<v key="data">visit2</v>
+<v key="_output">visit2</v>
+<v key="_output@auto">false</v>
+<v key="type">Include</v>
+<v key="columns">
+<row>
+<v>症例登録番号</v>
+</row>
+<row>
+<v>試験名</v>
+</row>
+<row>
+<v>現施設名</v>
+</row>
+<row>
+<v>QSDT1</v>
+</row>
+<row>
+<v>ANSWER1</v>
+</row>
+<row>
+<v>QSTD2</v>
+</row>
+<row>
+<v>ANSWER2</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="5" date="1457678998439" uid="a6c5ced23e51a9a5" x="640" y="50">
+			<command>visit2 &lt;- local({
+	x &lt;- visit2
+	y &lt;- visit2
+	y[[&quot;USUBJID&quot;]] &lt;- with(x, paste(試験名,現施設名,症例登録番号,sep=&quot;_&quot;))
+	y
+})
+</command>
+			<property title="USUBJIDの作成(visit2)"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.REditColumns" version="0.1">
+<v key="data">visit2</v>
+<v key="_output">visit2</v>
+<v key="_output@auto">true</v>
+<v key="transforms">
+<row>
+<v>USUBJID</v>
+<v>paste(試験名,現施設名,症例登録番号,sep="_")</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="6" date="1457678998439" uid="14ad6c280abd3e33" x="490" y="40">
+			<command>registration &lt;- local({
+	x &lt;- registration
+	y &lt;- registration
+	y[[&quot;USUBJID&quot;]] &lt;- with(x, paste(試験名,現施設名,症例登録番号,sep=&quot;_&quot;))
+	y
+})
+</command>
+			<property title="USUBJIDの作成(registration)"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.REditColumns" version="0.1">
+<v key="data">registration</v>
+<v key="_output">registration</v>
+<v key="_output@auto">true</v>
+<v key="transforms">
+<row>
+<v>USUBJID</v>
+<v>paste(試験名,現施設名,症例登録番号,sep="_")</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="7" date="1457678998439" uid="ccfc9603c192c914" x="200" y="70">
+			<command>registration &lt;- read.table(file = &quot;HCT-1337_registration_140418_1639.csv&quot;, header = TRUE, sep = &quot;,&quot;, fileEncoding = &quot;CP932&quot;, quote = &quot;\&quot;&quot;, stringsAsFactors = FALSE, comment.char = &quot;&quot;, na.strings = &quot;&quot;)
+</command>
+			<property title="registrationデータの読み込み"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReadTable" version="0.1">
+<v key="file">"HCT-1337_registration_140418_1639.csv"</v>
+<v key="_output">registration</v>
+<v key="_output@auto">false</v>
+<v key="autodetect">false</v>
+<v key="sep">","</v>
+<v key="header">TRUE</v>
+<v key="fileEncoding">"CP932"</v>
+<v key="nrows"/>
+<v key="na.strings">""</v>
+<v key="quote">"\""</v>
+<v key="stringsAsFactors">FALSE</v>
+<v key="comment.char">""</v>
+<v key="check.names"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<edge from="0" to="7"/>
+		<edge from="6" to="5"/>
+		<edge from="2" to="4"/>
+		<edge from="4" to="6"/>
+		<edge from="7" to="2"/>
+		<edge from="5" to="3"/>
+		<edge from="1" to="0"/>
+	</graph>
+	<task>
+		<taskgroup>
+			<taskproperty>
+				<entry key="title">リンク</entry>
+			</taskproperty>
+		</taskgroup>
+	</task>
+</rflow>

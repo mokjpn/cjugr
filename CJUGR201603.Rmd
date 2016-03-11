@@ -1,4 +1,25 @@
-# 2016年3月会合
+## CJUG SDTM+R Team March 2016 Meeting log
 
-前回までで、R AnalyticFlowを使ったデータの読み込みと図示の基礎を行いました。目標としては生データからSDTMを作ることですから、その基礎技術として、模擬試験データの計算スコアのデータから、USUBJID, QSORRES, QSTEST, QSTESTCDを含んだデータフレームを作成するフローを作ってみましょう。
+### Objective
+
+In previous meeting, we began reading an example trial data created in CJUG into R with R AnalyticFlow Software.
+Our current goal is to generated a part of SDTM dataset using R. 
+
+### Tools
+
+We are using [R AnalyticFlow](http://www.ef-prime.com/products/ranalyticflow_en/index.html).
+
+### Progress
+
+For this example data,first we are trying to generate a 
+part of QS domain dataset, including USUBJID, QSORRESS, QSTEST, and QSTESTCD.
+
+In the meeting, we achieved to extract a raw data containing information to build USUBJID, QSDTC, and QSORRES.
+
+Current workflow file can be found [here](Example2.rflow).
+
+### Next plan
+
+In the next meeting we will continue to make a progress to the current goal.
+
 
