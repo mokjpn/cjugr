@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rflow [
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
+<rflow>
+	<graph version="0.7" width="698" height="303" locationtype="a" offsetx="-9" offsety="-109">
+		<setting>
+			<entry key="OUTPUT_DIRECTORY"></entry>
+			<entry key="SAVE_CACHE">false</entry>
+			<entry key="FONT_SCREEN">monospace</entry>
+			<entry key="TEXT_ENCODING">UTF-8</entry>
+			<entry key="LOAD_CACHE">false</entry>
+			<entry key="IGNORE_ERROR">false</entry>
+			<entry key="SAVE_WORKSPACE"></entry>
+			<entry key="OUTPUT_REPORT">true</entry>
+			<entry key="OUTPUT_ITEMS">script</entry>
+			<entry key="RUN_TYPE">2</entry>
+			<entry key="USE_GRID">true</entry>
+			<entry key="REPORT_TYPES">pdf,html</entry>
+			<entry key="FOLDER">CJUG20160311</entry>
+			<entry key="GRID_DISTANCE2">10</entry>
+			<entry key="IMAGE_SIZE">480,480</entry>
+			<entry key="FONT_OTHER">sans-serif</entry>
+		</setting>
+<properties>
+<v key="packages"/>
+</properties>
+		<node id="0" date="1457676232725" uid="6d3d94beea2f2483" x="250" y="110">
+			<command>merged &lt;- merge(x = HCT.1337_registration_140418_1639, y = HCT.1337_visit2_140418_1643, all = FALSE, by = c(&quot;症例登録番号&quot;))
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RMerge2">
+<v key="x">HCT.1337_registration_140418_1639</v>
+<v key="y">HCT.1337_visit2_140418_1643</v>
+<v key="_output">merged</v>
+<v key="type">inner</v>
+<v key="match_columns">
+<row>
+<v>症例登録番号</v>
+<v/>
+</row>
+</v>
+<v key="suffixes_x"/>
+<v key="suffixes_y"/>
+<v key="args_switch">merge</v>
+<v key="args_switch@auto">true</v>
+<v key="args_merge"/>
+</ui>
+			</option>
+		</node>
+		<node id="1" date="1457678544602" uid="bebfd15e1f8e42eb" x="660" y="110">
+			<command>visit1_time &lt;- visit1_time[, names(visit1_time) %in% c(&quot;QSORRES&quot;, &quot;USUBJID&quot;, &quot;QSTESTCD&quot;, &quot;QSTEST&quot;, &quot;QSDTC&quot;, 
+&quot;VISIT&quot;, &quot;VISITNUM&quot;), drop = FALSE]
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RSelectColumns" version="0.1">
+<v key="data">visit1_time</v>
+<v key="_output">visit1_time</v>
+<v key="_output@auto">true</v>
+<v key="type">Include</v>
+<v key="columns">
+<row>
+<v>QSORRES</v>
+</row>
+<row>
+<v>USUBJID</v>
+</row>
+<row>
+<v>QSTESTCD</v>
+</row>
+<row>
+<v>QSTEST</v>
+</row>
+<row>
+<v>QSDTC</v>
+</row>
+<row>
+<v>VISIT</v>
+</row>
+<row>
+<v>VISITNUM</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="2" date="1457676199830" uid="6fc62e254ae87776" x="170" y="190">
+			<command>HCT.1337_registration_140418_1639 &lt;- read.table(file = &quot;HCT-1337_registration_140418_1639.csv&quot;, header = TRUE, sep = &quot;,&quot;, fileEncoding = &quot;Shift_JIS&quot;, quote = &quot;\&quot;&quot;, stringsAsFactors = FALSE, comment.char = &quot;&quot;, na.strings = &quot;&quot;)
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReadTable" version="0.1">
+<v key="file">"HCT-1337_registration_140418_1639.csv"</v>
+<v key="_output">HCT.1337_registration_140418_1639</v>
+<v key="_output@auto">true</v>
+<v key="autodetect">false</v>
+<v key="sep">","</v>
+<v key="header">TRUE</v>
+<v key="fileEncoding">"Shift_JIS"</v>
+<v key="nrows"/>
+<v key="na.strings">""</v>
+<v key="quote">"\""</v>
+<v key="stringsAsFactors">FALSE</v>
+<v key="comment.char">""</v>
+<v key="check.names"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="3" date="1457677534336" uid="ff2a15a3595931ec" x="580" y="110">
+			<command>visit1_time &lt;- local({
+	x &lt;- visit1
+	y &lt;- visit1
+	y[[&quot;QSDTC&quot;]] &lt;- with(x, paste1(QSDT1_,QSTM1))
+	y[[&quot;VISIT&quot;]] &lt;- with(x, &quot;PRE&quot;)
+	y[[&quot;VISITNUM&quot;]] &lt;- with(x, 1)
+	y
+})
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.REditColumns" version="0.1">
+<v key="data">visit1</v>
+<v key="_output">visit1_time</v>
+<v key="_output@auto">false</v>
+<v key="transforms">
+<row>
+<v>QSDTC</v>
+<v>paste1(QSDT1_,QSTM1)</v>
+</row>
+<row>
+<v>VISIT</v>
+<v>"PRE"</v>
+</row>
+<row>
+<v>VISITNUM</v>
+<v>1</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="4" date="1457676175109" uid="fe96ab940030e724" x="250" y="190">
+			<command>HCT.1337_visit2_140418_1643 &lt;- read.table(file = &quot;HCT-1337_visit2_140418_1643.csv&quot;, header = TRUE, sep = &quot;,&quot;, fileEncoding = &quot;Shift_JIS&quot;, quote = &quot;\&quot;&quot;, stringsAsFactors = FALSE, comment.char = &quot;&quot;, na.strings = &quot;&quot;)
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReadTable" version="0.1">
+<v key="file">"HCT-1337_visit2_140418_1643.csv"</v>
+<v key="_output">HCT.1337_visit2_140418_1643</v>
+<v key="_output@auto">true</v>
+<v key="autodetect">false</v>
+<v key="sep">","</v>
+<v key="header">TRUE</v>
+<v key="fileEncoding">"Shift_JIS"</v>
+<v key="nrows"/>
+<v key="na.strings">""</v>
+<v key="quote">"\""</v>
+<v key="stringsAsFactors">FALSE</v>
+<v key="comment.char">""</v>
+<v key="check.names"/>
+<v key="advanced"/>
+</ui>
+			</option>
+		</node>
+		<node id="5" date="1457678635752" uid="9255e27afcf2f12c" x="910" y="110">
+			<command>visit2_time &lt;- local({
+	x &lt;- visit2
+	y &lt;- visit2
+	y[[&quot;QSDTC&quot;]] &lt;- with(x, paste1(QSDT2_,QSTM2))
+	y[[&quot;VISIT&quot;]] &lt;- with(x, &quot;POST&quot;)
+	y[[&quot;VISITNUM&quot;]] &lt;- with(x, 2)
+	y
+})
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.REditColumns" version="0.1">
+<v key="data">visit2</v>
+<v key="_output">visit2_time</v>
+<v key="_output@auto">false</v>
+<v key="transforms">
+<row>
+<v>QSDTC</v>
+<v>paste1(QSDT2_,QSTM2)</v>
+</row>
+<row>
+<v>VISIT</v>
+<v>"POST"</v>
+</row>
+<row>
+<v>VISITNUM</v>
+<v>2</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="6" date="1460101545710" uid="bde6f3189a2f9109" x="80" y="110">
+			<command>setwd(dir = dirname(file.choose()))
+</command>
+			<property title="データファイルのフォルダを選択"/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+				<uidef>type: r-default
+value:
+  type: default
+  title: &apos;&apos;
+  function: setwd
+  package: &apos;&apos;
+  output: true
+  args:
+  - - argument: dir
+      key_model:
+        type: rstring
+        value: {id: dir, title: &apos;&apos;, default: file.choose(), required: false}
+</uidef>
+<ui cls="setwd.yaml">
+<v key="_output"/>
+<v key="dir">dirname(file.choose())</v>
+</ui>
+			</option>
+		</node>
+		<node id="7" date="1457676425013" uid="5d892c480526a247" x="330" y="110">
+			<command>merged2 &lt;- local({
+	x &lt;- merged
+	y &lt;- merged
+	y[[&quot;USUBJID&quot;]] &lt;- with(x, paste(試験名.x, 症例登録番号, sep = &quot;-&quot;))
+	y[[&quot;QSTESTCD&quot;]] &lt;- with(x, &quot;CALTEST&quot;)
+	y[[&quot;QSTEST&quot;]] &lt;- with(x, &quot;Calculation Test&quot;)
+	y[[&quot;QSDT1_&quot;]] &lt;- with(x, as.Date(QSDT1, format=&quot;%Y/%m/%d&quot;))
+	y[[&quot;QSDT2_&quot;]] &lt;- with(x, as.Date(QSTD2, format=&quot;%Y/%m/%d&quot;))
+	y
+})
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.REditColumns" version="0.1">
+<v key="data">merged</v>
+<v key="_output">merged2</v>
+<v key="_output@auto">false</v>
+<v key="transforms">
+<row>
+<v>USUBJID</v>
+<v>paste(試験名.x, 症例登録番号, sep = "-")</v>
+</row>
+<row>
+<v>QSTESTCD</v>
+<v>"CALTEST"</v>
+</row>
+<row>
+<v>QSTEST</v>
+<v>"Calculation Test"</v>
+</row>
+<row>
+<v>QSDT1_</v>
+<v>as.Date(QSDT1, format="%Y/%m/%d")</v>
+</row>
+<row>
+<v>QSDT2_</v>
+<v>as.Date(QSTD2, format="%Y/%m/%d")</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="8" date="1457679006686" uid="277e94c005dfca6a" x="1080" y="110">
+			<command>QS &lt;- rbind(visit1_time, visit2_time)
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RMerge2">
+<v key="x">visit1_time</v>
+<v key="y">visit2_time</v>
+<v key="_output">QS</v>
+<v key="type">row</v>
+<v key="match_columns">
+<row>
+<v>USUBJID</v>
+<v/>
+</row>
+<row>
+<v>VISITNUM</v>
+<v/>
+</row>
+</v>
+<v key="remove_row_name">false</v>
+<v key="suffixes_x"/>
+<v key="suffixes_y"/>
+<v key="args_switch">rbind</v>
+<v key="args_switch@auto">true</v>
+<v key="args_merge"/>
+<v key="args_rbind"/>
+</ui>
+			</option>
+		</node>
+		<node id="9" date="1457678635749" uid="113e07da20e96653" x="820" y="110">
+			<command>names(visit2) &lt;- local({
+	x &lt;- names(visit2)
+	m &lt;- match(x = x, table = c(&quot;ANSWER2&quot;))
+	replace(x, !is.na(m), c(&quot;QSORRES&quot;)[m[!is.na(m)]])
+})
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReplaceNames">
+<v key="data">visit2</v>
+<v key="target">names</v>
+<v key="type">standard</v>
+<v key="replacement_table">
+<row>
+<v>ANSWER2</v>
+<v>QSORRES</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="10" date="1460100069809" uid="1dbb6ae556714e7d" x="550" y="180">
+			<command>paste1 &lt;- function(col1, col2) {
+	 result &lt;- paste(col1, col2, sep=&quot;T&quot;)
+	 result[is.na(col1) | is.na(col2)] &lt;- NA
+	 result
+}</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+		</node>
+		<node id="11" date="1457676802314" uid="c2f1147a6f87140e" x="420" y="110">
+			<command>visit1 &lt;- merged2[, names(merged2) %in% c(&quot;QSDT1_&quot;, &quot;QSTM1&quot;, &quot;ANSWER1&quot;, &quot;USUBJID&quot;, &quot;QSTESTCD&quot;, 
+&quot;QSTEST&quot;), drop = FALSE]
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RSelectColumns" version="0.1">
+<v key="data">merged2</v>
+<v key="_output">visit1</v>
+<v key="_output@auto">false</v>
+<v key="type">Include</v>
+<v key="columns">
+<row>
+<v>QSDT1_</v>
+</row>
+<row>
+<v>QSTM1</v>
+</row>
+<row>
+<v>ANSWER1</v>
+</row>
+<row>
+<v>USUBJID</v>
+</row>
+<row>
+<v>QSTESTCD</v>
+</row>
+<row>
+<v>QSTEST</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="12" date="1457678635745" uid="b2f63eb73dbc7a39" x="1000" y="110">
+			<command>visit2_time &lt;- visit2_time[, names(visit2_time) %in% c(&quot;QSORRES&quot;, &quot;USUBJID&quot;, &quot;QSTESTCD&quot;, &quot;QSTEST&quot;, &quot;QSDTC&quot;, 
+&quot;VISIT&quot;, &quot;VISITNUM&quot;), drop = FALSE]
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RSelectColumns" version="0.1">
+<v key="data">visit2_time</v>
+<v key="_output">visit2_time</v>
+<v key="_output@auto">true</v>
+<v key="type">Include</v>
+<v key="columns">
+<row>
+<v>QSORRES</v>
+</row>
+<row>
+<v>USUBJID</v>
+</row>
+<row>
+<v>QSTESTCD</v>
+</row>
+<row>
+<v>QSTEST</v>
+</row>
+<row>
+<v>QSDTC</v>
+</row>
+<row>
+<v>VISIT</v>
+</row>
+<row>
+<v>VISITNUM</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="13" date="1457678635750" uid="b43d235a29a6f089" x="740" y="110">
+			<command>visit2 &lt;- merged2[, names(merged2) %in% c(&quot;QSDT2_&quot;, &quot;QSTM2&quot;, &quot;ANSWER2&quot;, &quot;USUBJID&quot;, &quot;QSTESTCD&quot;, 
+&quot;QSTEST&quot;), drop = FALSE]
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RSelectColumns" version="0.1">
+<v key="data">merged2</v>
+<v key="_output">visit2</v>
+<v key="_output@auto">false</v>
+<v key="type">Include</v>
+<v key="columns">
+<row>
+<v>QSDT2_</v>
+</row>
+<row>
+<v>QSTM2</v>
+</row>
+<row>
+<v>ANSWER2</v>
+</row>
+<row>
+<v>USUBJID</v>
+</row>
+<row>
+<v>QSTESTCD</v>
+</row>
+<row>
+<v>QSTEST</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<node id="14" date="1457677390717" uid="aaeca802d04fbd7" x="500" y="110">
+			<command>names(visit1) &lt;- local({
+	x &lt;- names(visit1)
+	m &lt;- match(x = x, table = c(&quot;ANSWER1&quot;))
+	replace(x, !is.na(m), c(&quot;QSORRES&quot;)[m[!is.na(m)]])
+})
+</command>
+			<property/>
+			<option type="com.ef_prime.rflow.node.ui.UINodeModel">
+<ui cls="com.ef_prime.rflow.core.app.r.RReplaceNames">
+<v key="data">visit1</v>
+<v key="target">names</v>
+<v key="type">standard</v>
+<v key="replacement_table">
+<row>
+<v>ANSWER1</v>
+<v>QSORRES</v>
+</row>
+</v>
+</ui>
+			</option>
+		</node>
+		<edge from="6" to="2"/>
+		<edge from="4" to="0"/>
+		<edge from="7" to="11"/>
+		<edge from="10" to="3"/>
+		<edge from="1" to="13"/>
+		<edge from="12" to="8"/>
+		<edge from="11" to="14"/>
+		<edge from="14" to="10"/>
+		<edge from="0" to="7"/>
+		<edge from="5" to="12"/>
+		<edge from="3" to="1"/>
+		<edge from="13" to="9"/>
+		<edge from="9" to="5"/>
+		<edge from="2" to="4"/>
+	</graph>
+	<task>
+		<taskgroup>
+			<taskproperty>
+				<entry key="title">リンク</entry>
+			</taskproperty>
+		</taskgroup>
+	</task>
+</rflow>
