@@ -1,0 +1,35 @@
+---
+title: "R20161014"
+author: "Nagai"
+date: "2016年10月14日"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+```{r}
+v2 <- read.csv(file("visit2.csv",encoding = "cp932"), header=TRUE) 
+v2
+summary(v2)
+```
+You can also embed plots, for example:
+```{r}
+table(v2$ANSWER1 , v2$ANSWER2)
+```
+```{r}
+table(v2$ANSWER1 , v2$ANSWER2)
+v3  <- data.frame(label=c(rep("ANSWER1", nrow(v2)),rep("ANSWER2", nrow(v2))), value=c(v2$ANSWER1, v2$ANSWER2))
+plot(value ~ label, data=v3)
+t.test(value ~ label, data=v3)
+```
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
