@@ -1,0 +1,60 @@
+---
+title: "hct-1337試験"
+author: "Masaaki Kakuda"
+output: html_document
+---
+### このファイルの作成日時
+```{r timelog, echo = FALSE}
+ Sys.time()
+``` 
+[SRD](http://www.cro-srd.co.jp/)ここだよ
+
+### データ持ってきます。
+```{r results='asis'}
+library("foreign")
+setwd("~/RAnalyticFlow/kakuda20160115/test/06_XPT")
+ae<-read.xport("ae.xpt")
+co<-read.xport("co.xpt")
+da<-read.xport("da.xpt")
+dm<-read.xport("dm.xpt")
+ds<-read.xport("ds.xpt")
+ex<-read.xport("ex.xpt")
+qs<-read.xport("qs.xpt")
+sc<-read.xport("sc.xpt")
+se<-read.xport("se.xpt")
+su<-read.xport("su.xpt")
+sv<-read.xport("sv.xpt")
+``` 
+
+### 以下は、knitrのkable関数を利用し
+### hct-1337試験のSDTMデータの上から8件を表示します。
+```{r results='asis'}
+knitr::kable(head(ae,8))
+```
+
+### RAnalyticFlowでデータフレームの列表示を減らしたときの
+### コードをコピペします。
+```{r results='asis'}
+ae2 <- ae[, names(ae) %in% c("AETERM", "AEDECOD", "AEPTCD", "AESEV", "AESER", "AEACN", "AEREL", "AEOUT", "EPOCH", "AESTDY", "AEENDY", "AEENRTPT", "AEENTPT"), drop = FALSE]
+knitr::kable(head(ae2,8))
+```
+
+### 以下は重篤な有害事象です
+```{r results='asis'}
+df<-subset(ae2, AESEV=='SEVERE')
+knitr::kable(df)
+```
+
+### 以下は集計表です
+```{r results='asis'}
+ae2.aggregate <- aggregate(formula = cbind(n = 1:nrow(ae2)) ~ AETERM + AEDECOD + AEPTCD, data = ae2, FUN = length)
+
+knitr::kable(data.frame(ae2.aggregate))
+```
+
+### 男女クロス集計
+```{r results='asis'}
+dm2 <- dm[, names(dm) %in% c("AGE", "SEX", "ACTARM"), drop = FALSE]
+dm2.xtabs <- xtabs(data = dm2, formula = ~ SEX + ACTARM)
+knitr::kable(data.frame(dm2.xtabs))
+```
