@@ -55,7 +55,8 @@ Import SDTM dataset to R's dataframe in XPT format.
 
 XPT files can be read by `read.xport()` function of `foreign` package.
 
-```{r}
+
+```r
 setwd("~/CJUG/SDTM/20_Work_in_progress/23_HCT-1337")
 library(foreign)
 # read.xportでxptファイルを変数QSに、データフレームとして読み込み
@@ -64,12 +65,35 @@ DA <- read.xport("30_Summary/dataset/DA.xpt")
 str(QS)
 ```
 
+```
+'data.frame':	118 obs. of  18 variables:
+ $ STUDYID : Factor w/ 1 level "HCT-1337": 1 1 1 1 1 1 1 1 1 1 ...
+ $ DOMAIN  : Factor w/ 1 level "QS": 1 1 1 1 1 1 1 1 1 1 ...
+ $ USUBJID : Factor w/ 59 levels "HCT-13370101",..: 1 1 2 2 3 3 4 4 5 5 ...
+ $ QSSEQ   : num  1 2 1 2 1 2 1 2 1 2 ...
+ $ QSTESTCD: Factor w/ 2 levels "POSTQ","PREQS": 2 1 2 1 2 1 2 1 2 1 ...
+ $ QSTEST  : Factor w/ 2 levels "Post-dose Calculation test",..: 2 1 2 1 2 1 2 1 2 1 ...
+ $ QSCAT   : Factor w/ 1 level "Calculation Test": 1 1 1 1 1 1 1 1 1 1 ...
+ $ QSORRES : Factor w/ 83 levels "","102","104",..: 5 21 20 52 65 76 60 56 49 61 ...
+ $ QSSTRESC: Factor w/ 83 levels "","102","104",..: 5 21 20 52 65 76 60 56 49 61 ...
+ $ QSBLFL  : Factor w/ 2 levels "","Y": 2 1 2 1 2 1 2 1 2 1 ...
+ $ VISITNUM: num  2 2 2 2 2 2 2 2 2 2 ...
+ $ VISIT   : Factor w/ 1 level "Dosing": 1 1 1 1 1 1 1 1 1 1 ...
+ $ VISITDY : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ EPOCH   : Factor w/ 2 levels "SCREENING","TREATMENT": 1 2 1 2 1 2 1 2 1 2 ...
+ $ QSDTC   : Factor w/ 1 level "..": 1 1 1 1 1 1 1 1 1 1 ...
+ $ QSDY    : num  1 1 1 1 1 1 1 1 1 1 ...
+ $ QSTPT   : Factor w/ 2 levels "Post-dose","Pre-dose": 2 1 2 1 2 1 2 1 2 1 ...
+ $ QSTPTNUM: num  1 2 1 2 1 2 1 2 1 2 ...
+```
+
 Import SDTM dataset to R's dataframe in Dataset-XMLformat.
 =====================
 
 Dataset-XML files can be read by `read.dataset.xml()` function of `R4DSXML` package.
 
-```{r}
+
+```r
 setwd("../Define2Validate")
 library(R4DSXML)
 # read.dataset.xmlでDataset-XMLファイルを変数CMに、データフレームとして読み込み
@@ -77,10 +101,21 @@ CM <- read.dataset.xml("Odm_CM.xml", "Odm_Define.xml")
 str(CM)
 ```
 
+```
+'data.frame':	2 obs. of  6 variables:
+ $ DOMAIN : chr  "CM" "CM"
+ $ CMSEQ  : int  1 2
+ $ CMTRT  : chr  "マイスタン錠５ｍｇ" "クレストール錠"
+ $ CMDOSE : int  3 5
+ $ CMDOSU : chr  "CAPSULE" "mgg"
+ $ CMSTDTC: chr  "2016-03-16T10:56:40" "2016-03-16T10:56:401"
+```
+
 Draw some graphics
 ==============================
 
-```{r}
+
+```r
 library(tidyr)
 library(dplyr)
 QS %>%  
@@ -99,8 +134,9 @@ QS %>%
   inner_join(DA,by="USUBJID") %>%
   # DASCATごとにdiffの値を箱ひげ図にします
   plot(diff ~ DASCAT, data=.) 
-
 ```
+
+![plot of chunk unnamed-chunk-3](Workshop2017-figure/unnamed-chunk-3-1.png)
 
 R AnalyticFlow
 ==============================
@@ -163,7 +199,7 @@ Like that:
 <pre>
 Dataset-XML files can be read by `read.dataset.xml()` function of `R4DSXML` package.
 
-`r ''````{r}
+```{r}
 setwd("../Define2Validate")
 library(R4DSXML)
 # read.dataset.xmlでDataset-XMLファイルを変数CMに、データフレームとして読み込み
@@ -175,7 +211,8 @@ str(CM)
 The code inside backquotes are interpreted when converting document into HTML/Word/PDF, and the result(string representation of CM variable) will be displayed in the final document even there is no actual data in the R markdown document.
 
 From the Rmd document below:
-```{r, eval=FALSE}
+
+```r
 Currently, there are `r length(unique(DM$USUBJID))` subjects. Number of non-treated arm is `r length(na.omit(DM$ACTARMCD=="NOTTRT"))`.
 ```
 You will get this Word file:
