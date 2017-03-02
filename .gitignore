@@ -6,3 +6,8 @@ cache/
 figure/
 .raf/
 .afp/
+*-figure/
+*Thumbs.db
+rsconnect/
+*.md
+*.html
