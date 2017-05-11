@@ -242,4 +242,27 @@ Summary
 - Also we recommend git version control system to manage revisions of R script source and R markdown document, that enables collabolation of statistical programmers and skillful data managers.
 
 
+Question & Answers
+=========================
+
+- Q: To begin using R, which packages do you recommend?
+
+- A: If you would like to code using some modern expressions like '%>%', I recommend to install 'tidyverse' package first. It includes much of modern features, such as ggplot2 graphics, dplyr data manipulation, readr data import. But if your textbook does not use these modern features, you do not need to install any package. Plain R itself contain all of basic, easy-to-learn methods to import, manipulate, and analyse your data.
+
+- Q: What is superiority of R compareing to SAS? (excluding the price issue) 
+
+- A: Unfortunately I have no experience of using SAS. So I cannot answer this question. But one thing I can say is that I have no problem when I handle SDTM dataset with R.
+
+- Q: When I use R for my business, will the validation of R required?
+
+- A: In general, the computer system validation will be required to produce dataset for the submission. To include R or Rstudio for your business process, these documents will be helpful:
+  - [R: Regulatory Compliance and Validation Issues, A Guidance Document for the Use of R in Regulated Clinical Trial Environments](https://www.r-project.org/doc/R-FDA.pdf)
+  - [RStudio: Regulatory Compliance and Validation Issues, A Guidance Document for the Use of RStudio Integrated Development Environment (IDE) Commercial Products in Regulated Clinical Trial Environments](https://www.rstudio.com/wp-content/uploads/2014/06/RStudio-Commercial-IDE-Validation.pdf)
+  
+
+
+
+
+
+
 
